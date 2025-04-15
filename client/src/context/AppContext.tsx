@@ -18,6 +18,7 @@ interface Transport {
   fuel: "Gasolina" | "Álcool" | "Diesel" | "Flex" | "Elétrico" | "GNV";
   distance: number;
   isAutomaticCalc: boolean;
+  passengers: number; // Número de passageiros (além do motorista)
 }
 
 interface Calculation {
@@ -64,8 +65,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         fuel: "Gasolina",
         distance: 120,
         isAutomaticCalc: true,
+        passengers: 0, // Nenhum passageiro adicional por padrão
         ...partialTransport,
-      });
+      } as Transport);
     }
   };
 
@@ -136,8 +138,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // Get emission factor based on vehicle and fuel
     const emissionFactor = emissionFactors[transport.vehicle]?.[transport.fuel] || 0.12;
 
-    // Calculate total emission (kg)
-    const totalEmission = transport.distance * emissionFactor;
+    // Calculate per-vehicle emission (kg)
+    const vehicleEmission = transport.distance * emissionFactor;
+    
+    // Add passenger factor - cada passageiro adiciona 15% à emissão base do veículo
+    const passengerFactor = transport.passengers ? (1 + (transport.passengers * 0.15)) : 1;
+    
+    // Calculate total emission including passengers (kg)
+    const totalEmission = vehicleEmission * passengerFactor;
 
     // Convert kg to ton
     const emissionTons = totalEmission / 1000;

@@ -13,6 +13,11 @@ import { calculateRoundTripDistance } from "../utils/calculationUtils";
 const schema = yup.object({
   vehicle: yup.string().required("Veículo é obrigatório"),
   fuel: yup.string().required("Combustível é obrigatório"),
+  passengers: yup
+    .number()
+    .min(0, "O número de passageiros não pode ser negativo")
+    .transform((value) => (isNaN(value) ? 0 : value))
+    .required("Número de passageiros é obrigatório")
 }).required();
 
 type FormData = yup.InferType<typeof schema>;
@@ -46,6 +51,7 @@ export default function TransportPage() {
     defaultValues: {
       vehicle: transport?.vehicle || "Carro",
       fuel: transport?.fuel || "Gasolina",
+      passengers: transport?.passengers || 0,
     }
   });
   
@@ -69,7 +75,8 @@ export default function TransportPage() {
       fuel: data.fuel as any,
       distance: distance,
       isAutomaticCalc: transport?.isAutomaticCalc || true,
-    });
+      passengers: data.passengers,
+    } as Transport);
     
     // Update current step
     setCurrentStep(3);
@@ -96,7 +103,8 @@ export default function TransportPage() {
         fuel: "Gasolina",
         distance,
         isAutomaticCalc: true,
-      });
+        passengers: 0, // Nenhum passageiro adicional por padrão
+      } as Transport);
     }
   }, []);
 
