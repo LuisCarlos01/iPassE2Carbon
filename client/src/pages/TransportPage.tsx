@@ -192,7 +192,7 @@ export default function TransportPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="value-label">Destino</span>
-                    <span className="value-display">STL Festival (São Paulo, SP)</span>
+                    <span className="value-display">São Thomé das Letras (MG)</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="value-label">Veículo</span>
