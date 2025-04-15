@@ -11,6 +11,7 @@ import CalculatorPage from "@/pages/CalculatorPage";
 import ResultPage from "@/pages/ResultPage";
 import PaymentPage from "@/pages/PaymentPage";
 import SuccessPage from "@/pages/SuccessPage";
+import { AppProvider } from "./context/AppContext";
 
 function Router() {
   return (
@@ -33,8 +34,10 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
-      <Toaster />
+      <AppProvider>
+        <Router />
+        <Toaster />
+      </AppProvider>
     </QueryClientProvider>
   );
 }
