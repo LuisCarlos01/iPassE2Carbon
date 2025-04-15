@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { calculateRoundTripDistance } from "../utils/calculationUtils";
+import { Transport } from "../context/AppContext"; // Importar o tipo Transport
 
 // Form validation schema
 const schema = yup.object({
@@ -17,6 +18,13 @@ const schema = yup.object({
     .number()
     .min(0, "O número de passageiros não pode ser negativo")
     .transform((value) => (isNaN(value) ? 0 : value))
+    .test('max-passengers', 'Número máximo de passageiros excedido', function(value) {
+      const vehicle = this.parent.vehicle;
+      if (vehicle === 'Moto') return value <= 1; // Máximo 1 passageiro para moto
+      if (vehicle === 'Carro') return value <= 4; // Máximo 4 passageiros para carro
+      if (vehicle === 'Van' || vehicle === 'Ônibus') return value <= 15; // Máximo 15 passageiros para van/ônibus
+      return true;
+    })
     .required("Número de passageiros é obrigatório")
 }).required();
 
@@ -57,6 +65,7 @@ export default function TransportPage() {
   
   const watchVehicle = watch("vehicle");
   const watchFuel = watch("fuel");
+  const watchPassengers = watch("passengers");
   
   // Handle form submission
   const onSubmit = (data: FormData) => {
@@ -186,6 +195,48 @@ export default function TransportPage() {
               </div>
             </div>
             
+            {/* Passenger Selection */}
+            <div className="card-container">
+              <h2 className="card-title">Número de Passageiros (além do motorista)</h2>
+              
+              <div className="mt-4">
+                <div className="flex flex-col">
+                  <label className="block mb-2 text-sm font-medium text-gray-700" htmlFor="passengers">
+                    {watchVehicle === "Moto" 
+                      ? "Máximo: 1 passageiro" 
+                      : watchVehicle === "Carro" 
+                        ? "Máximo: 4 passageiros" 
+                        : "Máximo: 15 passageiros"}
+                  </label>
+                  <input
+                    type="number"
+                    id="passengers"
+                    min="0"
+                    max={
+                      watchVehicle === "Moto" 
+                        ? 1 
+                        : watchVehicle === "Carro" 
+                          ? 4 
+                          : 15
+                    }
+                    className="block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 focus:border-green-500 focus:ring-green-500"
+                    {...register("passengers")}
+                  />
+                  {errors.passengers && (
+                    <p className="mt-2 text-sm text-red-600">{errors.passengers.message}</p>
+                  )}
+                </div>
+                
+                <div className="mt-4">
+                  <p className="text-sm text-gray-600">
+                    O número de passageiros influencia diretamente no cálculo de emissão de CO2 e,
+                    consequentemente, no valor da compensação. Cada passageiro adicional representa
+                    um aumento de 15% na emissão base do veículo.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
             {/* Travel Summary */}
             {origin && (
               <div className="card-container">
@@ -209,6 +260,12 @@ export default function TransportPage() {
                   <div className="flex flex-col">
                     <span className="value-label">Combustível</span>
                     <span className="value-display">{watchFuel}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="value-label">Passageiros</span>
+                    <span className="value-display">
+                      {watchPassengers || 0} {Number(watchPassengers) === 1 ? "pessoa" : "pessoas"}
+                    </span>
                   </div>
                 </div>
               </div>

@@ -1,19 +1,19 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 // Define the types for our context state
-interface User {
+export interface User {
   name: string;
   cpf?: string;
   phone?: string;
 }
 
-interface Origin {
+export interface Origin {
   city: string;
   state: string;
   customCity?: boolean;
 }
 
-interface Transport {
+export interface Transport {
   vehicle: "Moto" | "Carro" | "Van" | "Ônibus";
   fuel: "Gasolina" | "Álcool" | "Diesel" | "Flex" | "Elétrico" | "GNV";
   distance: number;
@@ -21,7 +21,7 @@ interface Transport {
   passengers: number; // Número de passageiros (além do motorista)
 }
 
-interface Calculation {
+export interface Calculation {
   emissionFactor: number; // kg/km
   totalEmission: number; // kg
   compensationValue: number; // R$

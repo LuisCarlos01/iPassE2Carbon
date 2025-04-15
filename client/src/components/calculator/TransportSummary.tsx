@@ -35,6 +35,16 @@ export default function TransportSummary() {
           <span className="value-label">Combustível</span>
           <span className="value-display">{transport.fuel}</span>
         </div>
+        <div className="flex flex-col">
+          <span className="value-label">Passageiros</span>
+          <span className="value-display">
+            {transport.passengers} {transport.passengers === 1 ? "pessoa" : "pessoas"}
+          </span>
+        </div>
+        <div className="flex flex-col">
+          <span className="value-label">Distância total</span>
+          <span className="value-display">{transport.distance} km (ida e volta)</span>
+        </div>
       </div>
     </div>
   );
