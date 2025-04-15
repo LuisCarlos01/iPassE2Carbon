@@ -53,16 +53,44 @@ const states = [
   { value: "TO", label: "Tocantins" },
 ];
 
-// Mock cities for each state (for demonstration purposes)
+// Cities for each state
 const getCitiesByState = (stateCode: string): string[] => {
   const cities: Record<string, string[]> = {
-    SP: ["São Paulo", "Campinas", "Guarulhos", "Santos", "Ribeirão Preto"],
-    RJ: ["Rio de Janeiro", "Niterói", "Búzios", "Petrópolis", "Angra dos Reis"],
-    MG: ["Belo Horizonte", "Juiz de Fora", "Ouro Preto", "Uberlândia", "Tiradentes"],
-    // Add more cities for other states as needed
+    SP: ["São Paulo", "Campinas", "Guarulhos", "Santos", "Ribeirão Preto", "São Bernardo do Campo", "Santo André", "Osasco"],
+    RJ: ["Rio de Janeiro", "Niterói", "Búzios", "Petrópolis", "Angra dos Reis", "São Gonçalo", "Nova Iguaçu", "Duque de Caxias"],
+    MG: ["Belo Horizonte", "Juiz de Fora", "Ouro Preto", "Uberlândia", "Tiradentes", "Contagem", "Uberaba", "São Thomé das Letras"],
+    BA: ["Salvador", "Feira de Santana", "Vitória da Conquista", "Camaçari", "Porto Seguro", "Ilhéus"],
+    PR: ["Curitiba", "Londrina", "Maringá", "Foz do Iguaçu", "Ponta Grossa", "Cascavel"],
+    RS: ["Porto Alegre", "Caxias do Sul", "Pelotas", "Canoas", "Santa Maria", "Gramado"],
+    SC: ["Florianópolis", "Joinville", "Blumenau", "Balneário Camboriú", "Criciúma", "Chapecó"],
+    GO: ["Goiânia", "Anápolis", "Rio Verde", "Aparecida de Goiânia", "Caldas Novas", "Catalão"],
+    PE: ["Recife", "Jaboatão dos Guararapes", "Olinda", "Caruaru", "Petrolina", "Paulista"],
+    CE: ["Fortaleza", "Caucaia", "Juazeiro do Norte", "Maracanaú", "Sobral", "Crato"],
+    PA: ["Belém", "Ananindeua", "Santarém", "Marabá", "Castanhal", "Parauapebas"],
+    AM: ["Manaus", "Parintins", "Itacoatiara", "Manacapuru", "Coari", "Tefé"],
+    ES: ["Vitória", "Vila Velha", "Serra", "Cariacica", "Cachoeiro de Itapemirim", "Linhares"],
+    DF: ["Brasília", "Ceilândia", "Taguatinga", "Plano Piloto", "Samambaia", "Águas Claras"],
+    MS: ["Campo Grande", "Dourados", "Três Lagoas", "Corumbá", "Ponta Porã", "Naviraí"],
+    MT: ["Cuiabá", "Várzea Grande", "Rondonópolis", "Sinop", "Tangará da Serra", "Cáceres"],
+    MA: ["São Luís", "Imperatriz", "Timon", "Caxias", "Codó", "Açailândia"],
+    AL: ["Maceió", "Arapiraca", "Rio Largo", "Palmeira dos Índios", "União dos Palmares", "Penedo"],
+    PI: ["Teresina", "Parnaíba", "Picos", "Piripiri", "Campo Maior", "Floriano"],
+    RN: ["Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante", "Macaíba", "Caicó"],
+    PB: ["João Pessoa", "Campina Grande", "Santa Rita", "Patos", "Bayeux", "Cabedelo"],
+    SE: ["Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana", "São Cristóvão", "Estância"],
+    RO: ["Porto Velho", "Ji-Paraná", "Ariquemes", "Vilhena", "Cacoal", "Rolim de Moura"],
+    TO: ["Palmas", "Araguaína", "Gurupi", "Porto Nacional", "Paraíso do Tocantins", "Colinas do Tocantins"],
+    AC: ["Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauacá", "Feijó", "Brasileia"],
+    AP: ["Macapá", "Santana", "Laranjal do Jari", "Oiapoque", "Mazagão", "Porto Grande"],
+    RR: ["Boa Vista", "Caracaraí", "Rorainópolis", "Alto Alegre", "Mucajaí", "Cantá"],
   };
   
-  return cities[stateCode] || [];
+  // If the state code is not found, return an empty array
+  if (!cities[stateCode]) {
+    return ["Cidade não disponível"];
+  }
+  
+  return cities[stateCode];
 };
 
 export default function OriginPage() {

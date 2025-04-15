@@ -84,14 +84,14 @@ export default function SuccessPage() {
                 <span className="ml-1 text-xl font-light text-green-600">E2Carbon</span>
               </div>
               <h2 className="text-xl font-bold text-gray-900">Certificado de Compensação de Carbono</h2>
-              <p className="text-sm text-gray-500">STL Festival - {new Date().getFullYear()}</p>
+              <p className="text-sm text-gray-500">São Thomé das Letras - {new Date().getFullYear()}</p>
             </div>
             
             <div className="mb-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="flex flex-col">
                   <span className="text-sm text-gray-500">Nome</span>
-                  <span className="font-medium">{origin.customCity}</span>
+                  <span className="font-medium">Participante</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm text-gray-500">Data</span>

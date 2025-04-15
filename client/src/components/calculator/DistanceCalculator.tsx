@@ -112,7 +112,7 @@ export default function DistanceCalculator() {
             </svg>
           </div>
           <p className="mt-2 text-sm text-gray-500">
-            Distância calculada automaticamente considerando ida e volta entre sua origem e o STL Festival
+            Distância calculada automaticamente considerando ida e volta entre sua origem e São Thomé das Letras
           </p>
         </div>
       )}

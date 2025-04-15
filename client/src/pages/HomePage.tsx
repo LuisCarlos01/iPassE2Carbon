@@ -33,7 +33,7 @@ export default function HomePage() {
             <span className="text-gray-900">iPass</span>
             <span className="text-green-600">E2Carbon</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8">Compensação para o STL Festival</p>
+          <p className="text-xl text-gray-600 mb-8">Compensação para São Thomé das Letras</p>
           <div className="animate-pulse text-gray-500">Redirecionando...</div>
         </div>
       </main>

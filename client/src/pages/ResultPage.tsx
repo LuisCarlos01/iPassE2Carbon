@@ -65,7 +65,7 @@ export default function ResultPage() {
             <div className="text-center mb-6">
               <h2 className="text-xl font-bold text-gray-900 mb-2">Resumo da sua emissão</h2>
               <p className="text-gray-600">
-                Viagem de ida e volta entre {origin.city}, {origin.state} e STL Festival
+                Viagem de ida e volta entre {origin.city}, {origin.state} e São Thomé das Letras
               </p>
             </div>
             
