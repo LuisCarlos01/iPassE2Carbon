@@ -8,6 +8,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import InputMask from 'react-input-mask';
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
+import { FaUser, FaIdCard, FaMobile, FaArrowRight } from "react-icons/fa";
 
 // Form validation schema
 const schema = yup.object({
@@ -26,6 +28,19 @@ const schema = yup.object({
 }).required();
 
 type FormData = yup.InferType<typeof schema>;
+
+// Animação para os itens do formulário
+const formItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1 + 0.3,
+      duration: 0.5,
+    },
+  }),
+};
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
@@ -56,6 +71,9 @@ export default function LoginPage() {
       // Update current step
       setCurrentStep(1);
       
+      // Show success toast
+      toast.success("Login realizado com sucesso!");
+      
       // Navigate to origin page
       setLocation("/origem");
       
@@ -82,66 +100,148 @@ export default function LoginPage() {
           </div>
         </div>
         
-        <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="ipass-card">
-            <h1 className="text-2xl font-bold text-[#333333] mb-6">Entre com seus dados</h1>
+        <motion.div 
+          className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="ipass-card relative overflow-hidden"
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            {/* Background decoration */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#02ab89] opacity-10"></div>
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[#02ab89] opacity-10"></div>
             
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="ipass-label">
+            <motion.h1 
+              className="text-2xl font-bold text-[#333333] mb-6 relative"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              Entre com seus dados
+            </motion.h1>
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 relative">
+              <motion.div
+                custom={0}
+                variants={formItemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <label htmlFor="name" className="ipass-label flex items-center">
                   Nome Completo
+                  <FaUser className="ml-2 text-[#02ab89]" size={16} />
                 </label>
-                <input
-                  id="name"
-                  type="text"
-                  className="ipass-input"
-                  placeholder="Seu nome completo"
-                  {...register("name")}
-                />
+                <div className="relative">
+                  <input
+                    id="name"
+                    type="text"
+                    className="ipass-input pr-10 hover-shadow transition-all"
+                    placeholder="Seu nome completo"
+                    {...register("name")}
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <FaUser className="text-gray-400" size={16} />
+                  </div>
+                </div>
                 {errors.name && (
-                  <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>
+                  <motion.p 
+                    className="mt-2 text-sm text-red-600"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {errors.name.message}
+                  </motion.p>
                 )}
-              </div>
+              </motion.div>
 
-              <div>
-                <label htmlFor="cpf" className="ipass-label">
+              <motion.div
+                custom={1}
+                variants={formItemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <label htmlFor="cpf" className="ipass-label flex items-center">
                   CPF
+                  <FaIdCard className="ml-2 text-[#02ab89]" size={16} />
                 </label>
-                <InputMask
-                  mask="999.999.999-99"
-                  id="cpf"
-                  type="text"
-                  className="ipass-input"
-                  placeholder="000.000.000-00"
-                  {...register("cpf")}
-                />
+                <div className="relative">
+                  <InputMask
+                    mask="999.999.999-99"
+                    id="cpf"
+                    type="text"
+                    className="ipass-input pr-10 hover-shadow transition-all"
+                    placeholder="000.000.000-00"
+                    {...register("cpf")}
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <FaIdCard className="text-gray-400" size={16} />
+                  </div>
+                </div>
                 {errors.cpf && (
-                  <p className="mt-2 text-sm text-red-600">{errors.cpf.message}</p>
+                  <motion.p 
+                    className="mt-2 text-sm text-red-600"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {errors.cpf.message}
+                  </motion.p>
                 )}
-              </div>
+              </motion.div>
               
-              <div>
-                <label htmlFor="phone" className="ipass-label">
+              <motion.div
+                custom={2}
+                variants={formItemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <label htmlFor="phone" className="ipass-label flex items-center">
                   Celular
+                  <FaMobile className="ml-2 text-[#02ab89]" size={16} />
                 </label>
-                <InputMask
-                  mask="(99) 99999-9999"
-                  id="phone"
-                  type="text"
-                  className="ipass-input"
-                  placeholder="(00) 00000-0000"
-                  {...register("phone")}
-                />
+                <div className="relative">
+                  <InputMask
+                    mask="(99) 99999-9999"
+                    id="phone"
+                    type="text"
+                    className="ipass-input pr-10 hover-shadow transition-all"
+                    placeholder="(00) 00000-0000"
+                    {...register("phone")}
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <FaMobile className="text-gray-400" size={16} />
+                  </div>
+                </div>
                 {errors.phone && (
-                  <p className="mt-2 text-sm text-red-600">{errors.phone.message}</p>
+                  <motion.p 
+                    className="mt-2 text-sm text-red-600"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {errors.phone.message}
+                  </motion.p>
                 )}
-              </div>
+              </motion.div>
               
-              <div>
-                <button
+              <motion.div
+                custom={3}
+                variants={formItemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <motion.button
                   type="submit"
-                  className="ipass-btn-primary w-full"
+                  className="ipass-btn-primary w-full flex items-center justify-center btn-shine"
                   disabled={isLoading}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   {isLoading ? (
                     <span className="flex items-center justify-center">
@@ -151,18 +251,27 @@ export default function LoginPage() {
                       </svg>
                       Entrando...
                     </span>
-                  ) : "Entrar"}
-                </button>
-              </div>
+                  ) : (
+                    <span className="flex items-center">
+                      Entrar <FaArrowRight className="ml-2" />
+                    </span>
+                  )}
+                </motion.button>
+              </motion.div>
             </form>
             
-            <div className="mt-8 text-center">
+            <motion.div 
+              className="mt-8 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+            >
               <p className="text-sm text-[#666666]">
-                Ao entrar, você concorda com nossos Termos de Serviço e Política de Privacidade.
+                Ao entrar, você concorda com nossos <a href="#" className="text-[#02ab89] hover:underline">Termos de Serviço</a> e <a href="#" className="text-[#02ab89] hover:underline">Política de Privacidade</a>.
               </p>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </main>
       
       <Footer />

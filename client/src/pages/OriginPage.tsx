@@ -7,6 +7,8 @@ import ProgressBar from "../components/ProgressBar";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { motion } from "framer-motion";
+import { FaMapMarkerAlt, FaCity, FaArrowRight, FaArrowLeft, FaGlobeAmericas, FaCheck } from "react-icons/fa";
 
 // Form validation schema
 const schema = yup.object({
@@ -97,6 +99,24 @@ const getCitiesByState = (stateCode: string): string[] => {
   return cities[stateCode];
 };
 
+// Animations for elements
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { 
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+      duration: 0.3
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1 }
+};
+
 export default function OriginPage() {
   const [, setLocation] = useLocation();
   const { origin, setOrigin, setCurrentStep } = useAppContext();
@@ -151,114 +171,180 @@ export default function OriginPage() {
         <ProgressBar />
         
         <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="ipass-card">
-            <h1 className="text-2xl font-bold text-[#333333] mb-6">Qual a sua cidade de origem?</h1>
+          <motion.div 
+            className="ipass-card relative overflow-hidden"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {/* Background decoration */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#02ab89] opacity-10"></div>
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-[#02ab89] opacity-10"></div>
             
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div>
-                <label htmlFor="state" className="ipass-label">
-                  Estado
-                </label>
-                <select
-                  id="state"
-                  className="ipass-input"
-                  {...register("state")}
-                >
-                  <option value="">Selecione um estado</option>
-                  {states.map((state) => (
-                    <option key={state.value} value={state.value}>
-                      {state.label}
-                    </option>
-                  ))}
-                </select>
-                {errors.state && (
-                  <p className="mt-2 text-sm text-red-600">{errors.state.message}</p>
-                )}
+            <motion.div variants={itemVariants} className="relative z-10">
+              <div className="flex items-center mb-6">
+                <FaMapMarkerAlt className="text-[#02ab89] text-2xl mr-3" />
+                <h1 className="text-2xl font-bold text-[#333333]">Qual a sua cidade de origem?</h1>
               </div>
               
-              {watchState && !watchCustomCity && (
-                <div>
-                  <label htmlFor="city" className="ipass-label">
-                    Cidade
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <motion.div variants={itemVariants}>
+                  <label htmlFor="state" className="ipass-label flex items-center">
+                    <FaGlobeAmericas className="mr-2 text-[#02ab89]" />
+                    Estado
                   </label>
                   <select
-                    id="city"
-                    className="ipass-input"
-                    {...register("city")}
+                    id="state"
+                    className="ipass-input hover-shadow transition-all"
+                    {...register("state")}
                   >
-                    <option value="">Selecione uma cidade</option>
-                    {availableCities.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
+                    <option value="">Selecione um estado</option>
+                    {states.map((state) => (
+                      <option key={state.value} value={state.value}>
+                        {state.label}
                       </option>
                     ))}
                   </select>
-                  {errors.city && (
-                    <p className="mt-2 text-sm text-red-600">{errors.city.message}</p>
+                  {errors.state && (
+                    <motion.p 
+                      className="mt-2 text-sm text-red-600"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    >
+                      {errors.state.message}
+                    </motion.p>
                   )}
-                </div>
-              )}
-              
-              <div className="flex items-center">
-                <input
-                  id="customCity"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-[#02ab89] focus:ring-[#02ab89]"
-                  {...register("customCity")}
-                  onChange={(e) => {
-                    setValue("customCity", e.target.checked);
-                    if (e.target.checked) {
-                      setValue("city", "");
-                    } else {
-                      setValue("customCityName", "");
-                    }
-                  }}
-                />
-                <label htmlFor="customCity" className="ml-2 block text-sm text-[#333333]">
-                  Minha cidade não está na lista
-                </label>
-              </div>
-              
-              {watchCustomCity && (
-                <div>
-                  <label htmlFor="customCityName" className="ipass-label">
-                    Nome da cidade
-                  </label>
-                  <input
-                    type="text"
-                    id="customCityName"
-                    className="ipass-input"
-                    placeholder="Digite o nome da sua cidade"
-                    {...register("customCityName")}
-                  />
-                  {errors.customCityName && (
-                    <p className="mt-2 text-sm text-red-600">{errors.customCityName.message}</p>
-                  )}
-                </div>
-              )}
-              
-              <div className="flex justify-between pt-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCurrentStep(0);
-                    setLocation("/login");
-                  }}
-                  className="ipass-btn-secondary"
-                >
-                  Voltar
-                </button>
+                </motion.div>
                 
-                <button
-                  type="submit"
-                  className="ipass-btn-primary"
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Processando..." : "Próximo"}
-                </button>
-              </div>
-            </form>
-          </div>
+                {watchState && !watchCustomCity && (
+                  <motion.div 
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ duration: 0.3 }}
+                  >
+                    <label htmlFor="city" className="ipass-label flex items-center">
+                      <FaCity className="mr-2 text-[#02ab89]" />
+                      Cidade
+                    </label>
+                    <select
+                      id="city"
+                      className="ipass-input hover-shadow transition-all"
+                      {...register("city")}
+                    >
+                      <option value="">Selecione uma cidade</option>
+                      {availableCities.map((city) => (
+                        <option key={city} value={city}>
+                          {city}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.city && (
+                      <motion.p 
+                        className="mt-2 text-sm text-red-600"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                      >
+                        {errors.city.message}
+                      </motion.p>
+                    )}
+                  </motion.div>
+                )}
+                
+                <motion.div variants={itemVariants} className="flex items-center">
+                  <div className="relative inline-flex items-center">
+                    <input
+                      id="customCity"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-[#02ab89] focus:ring-[#02ab89]"
+                      {...register("customCity")}
+                      onChange={(e) => {
+                        setValue("customCity", e.target.checked);
+                        if (e.target.checked) {
+                          setValue("city", "");
+                        } else {
+                          setValue("customCityName", "");
+                        }
+                      }}
+                    />
+                    <div className="absolute left-0 top-0 h-4 w-4 pointer-events-none flex items-center justify-center">
+                      {watchCustomCity && (
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="text-white text-xs"
+                        >
+                          <FaCheck className="text-white text-[8px]" />
+                        </motion.span>
+                      )}
+                    </div>
+                  </div>
+                  <label htmlFor="customCity" className="ml-2 block text-sm text-[#333333]">
+                    Minha cidade não está na lista
+                  </label>
+                </motion.div>
+                
+                {watchCustomCity && (
+                  <motion.div 
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ duration: 0.3 }}
+                  >
+                    <label htmlFor="customCityName" className="ipass-label flex items-center">
+                      <FaCity className="mr-2 text-[#02ab89]" />
+                      Nome da cidade
+                    </label>
+                    <input
+                      type="text"
+                      id="customCityName"
+                      className="ipass-input hover-shadow transition-all"
+                      placeholder="Digite o nome da sua cidade"
+                      {...register("customCityName")}
+                    />
+                    {errors.customCityName && (
+                      <motion.p 
+                        className="mt-2 text-sm text-red-600"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                      >
+                        {errors.customCityName.message}
+                      </motion.p>
+                    )}
+                  </motion.div>
+                )}
+                
+                <motion.div variants={itemVariants} className="flex justify-between pt-4">
+                  <motion.button
+                    type="button"
+                    onClick={() => {
+                      setCurrentStep(0);
+                      setLocation("/login");
+                    }}
+                    className="ipass-btn-secondary flex items-center"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <FaArrowLeft className="mr-2" /> Voltar
+                  </motion.button>
+                  
+                  <motion.button
+                    type="submit"
+                    className="ipass-btn-primary flex items-center btn-shine"
+                    disabled={isLoading}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {isLoading ? "Processando..." : (
+                      <>
+                        Próximo <FaArrowRight className="ml-2" />
+                      </>
+                    )}
+                  </motion.button>
+                </motion.div>
+              </form>
+            </motion.div>
+          </motion.div>
         </div>
       </main>
       

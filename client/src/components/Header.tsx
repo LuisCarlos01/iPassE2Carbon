@@ -1,28 +1,124 @@
+import { useState } from "react";
+import { useLocation } from "wouter";
 import { useAppContext } from "../context/AppContext";
+import { motion } from "framer-motion";
+import { FaUser, FaQuestionCircle, FaHome } from "react-icons/fa";
 
-// Importe as imagens dos logos
 export default function Header() {
   const { user } = useAppContext();
+  const [, setLocation] = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-[#02ab89] shadow-sm">
+    <header className="bg-[#02ab89] shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <div className="header-logo flex items-center">
-          <img src="/assets/logos/Ipass_logo.png" alt="iPass Logo" className="h-8 w-auto" />
-        </div>
-        <div className="flex items-center space-x-4">
+        {/* Logo com animação */}
+        <motion.div 
+          className="header-logo flex items-center cursor-pointer"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          whileHover={{ scale: 1.05 }}
+          onClick={() => setLocation("/")}
+        >
+          <img src="/assets/logos/Ipass_logo.png" alt="iPass Logo" className="h-12 w-auto" />
+        </motion.div>
+
+        {/* Menu para desktop */}
+        <div className="hidden md:flex items-center space-x-6">
           {user && (
-            <div className="text-sm text-white hidden sm:block">
-              Olá, <span className="font-medium">{user.name}</span>
-            </div>
+            <motion.div 
+              className="text-white flex items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              <FaUser className="mr-2" />
+              Olá, <span className="font-medium ml-1">{user.name.split(' ')[0]}</span>
+            </motion.div>
           )}
-          <button type="button" className="text-white hover:text-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+          
+          <motion.div 
+            className="flex items-center space-x-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <button 
+              onClick={() => setLocation("/")}
+              className="text-white hover:text-gray-200 flex items-center transition-colors"
+            >
+              <FaHome className="mr-1" />
+              <span className="text-sm">Início</span>
+            </button>
+            
+            <button 
+              onClick={() => window.open("https://ipass.com.br/fale-conosco", "_blank")}
+              className="text-white hover:text-gray-200 flex items-center transition-colors"
+            >
+              <FaQuestionCircle className="mr-1" />
+              <span className="text-sm">Ajuda</span>
+            </button>
+          </motion.div>
+        </div>
+
+        {/* Menu hamburguer para mobile */}
+        <div className="md:hidden">
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-white p-1"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
             </svg>
           </button>
         </div>
       </div>
+
+      {/* Menu mobile dropdown */}
+      {isMenuOpen && (
+        <motion.div 
+          className="md:hidden bg-[#02ab89] border-t border-[#01997a] py-2 px-4"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="flex flex-col space-y-3">
+            {user && (
+              <div className="text-white py-2 border-b border-[#01997a] flex items-center">
+                <FaUser className="mr-2" />
+                Olá, <span className="font-medium ml-1">{user.name.split(' ')[0]}</span>
+              </div>
+            )}
+            
+            <button 
+              onClick={() => {
+                setLocation("/");
+                setIsMenuOpen(false);
+              }}
+              className="text-white hover:text-gray-200 flex items-center py-2"
+            >
+              <FaHome className="mr-2" />
+              <span>Início</span>
+            </button>
+            
+            <button 
+              onClick={() => {
+                window.open("https://ipass.com.br/fale-conosco", "_blank");
+                setIsMenuOpen(false);
+              }}
+              className="text-white hover:text-gray-200 flex items-center py-2"
+            >
+              <FaQuestionCircle className="mr-2" />
+              <span>Ajuda</span>
+            </button>
+          </div>
+        </motion.div>
+      )}
     </header>
   );
 }
