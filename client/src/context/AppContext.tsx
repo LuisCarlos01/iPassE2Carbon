@@ -49,7 +49,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   // Initialize state
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [user, setUser] = useState<User>({ name: "João Silva" });
+  const [user, setUser] = useState<User>({ name: "" });
   const [origin, setOrigin] = useState<Origin | null>(null);
   const [transport, setTransport] = useState<Transport | null>(null);
   const [calculation, setCalculation] = useState<Calculation | null>(null);

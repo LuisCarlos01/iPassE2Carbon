@@ -23,7 +23,7 @@ export default function ProgressBar() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
       <div className="w-full bg-gray-200 rounded-full h-2.5">
         <div 
-          className="bg-green-600 h-2.5 rounded-full" 
+          className="bg-[#02ab89] h-2.5 rounded-full" 
           style={{ width: `${progressPercentage}%` }}
         ></div>
       </div>
@@ -31,7 +31,7 @@ export default function ProgressBar() {
         {steps.map((step) => (
           <span 
             key={step.step}
-            className={currentStep === step.step ? "font-medium text-green-600" : ""}
+            className={currentStep === step.step ? "font-medium text-[#02ab89]" : ""}
           >
             {step.name}
           </span>

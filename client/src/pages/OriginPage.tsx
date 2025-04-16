@@ -11,12 +11,16 @@ import * as yup from "yup";
 // Form validation schema
 const schema = yup.object({
   state: yup.string().required("Estado é obrigatório"),
-  city: yup.string().required("Cidade é obrigatória"),
+  city: yup.string().when("customCity", {
+    is: false,
+    then: (schema) => schema.required("Cidade é obrigatória"),
+    otherwise: (schema) => schema
+  }),
   customCity: yup.boolean(),
   customCityName: yup.string().when("customCity", {
     is: true,
     then: (schema) => schema.required("Nome da cidade é obrigatório"),
-    otherwise: (schema) => schema,
+    otherwise: (schema) => schema
   }),
 }).required();
 
@@ -75,7 +79,7 @@ const getCitiesByState = (stateCode: string): string[] => {
     MA: ["São Luís", "Imperatriz", "Timon", "Caxias", "Codó", "Açailândia"],
     AL: ["Maceió", "Arapiraca", "Rio Largo", "Palmeira dos Índios", "União dos Palmares", "Penedo"],
     PI: ["Teresina", "Parnaíba", "Picos", "Piripiri", "Campo Maior", "Floriano"],
-    RN: ["Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante", "Macaíba", "Caicó"],
+    RN: ["Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante", "Macauíba", "Caicó"],
     PB: ["João Pessoa", "Campina Grande", "Santa Rita", "Patos", "Bayeux", "Cabedelo"],
     SE: ["Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana", "São Cristóvão", "Estância"],
     RO: ["Porto Velho", "Ji-Paraná", "Ariquemes", "Vilhena", "Cacoal", "Rolim de Moura"],
@@ -143,116 +147,118 @@ export default function OriginPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow">
+      <main className="flex-grow bg-[#f5f5f5]">
         <ProgressBar />
         
         <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Qual a sua cidade de origem?</h1>
-          
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div>
-              <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
-                Estado
-              </label>
-              <select
-                id="state"
-                className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
-                {...register("state")}
-              >
-                <option value="">Selecione um estado</option>
-                {states.map((state) => (
-                  <option key={state.value} value={state.value}>
-                    {state.label}
-                  </option>
-                ))}
-              </select>
-              {errors.state && (
-                <p className="mt-2 text-sm text-red-600">{errors.state.message}</p>
-              )}
-            </div>
+          <div className="ipass-card">
+            <h1 className="text-2xl font-bold text-[#333333] mb-6">Qual a sua cidade de origem?</h1>
             
-            {watchState && !watchCustomCity && (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
-                  Cidade
+                <label htmlFor="state" className="ipass-label">
+                  Estado
                 </label>
                 <select
-                  id="city"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
-                  {...register("city")}
+                  id="state"
+                  className="ipass-input"
+                  {...register("state")}
                 >
-                  <option value="">Selecione uma cidade</option>
-                  {availableCities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
+                  <option value="">Selecione um estado</option>
+                  {states.map((state) => (
+                    <option key={state.value} value={state.value}>
+                      {state.label}
                     </option>
                   ))}
                 </select>
-                {errors.city && (
-                  <p className="mt-2 text-sm text-red-600">{errors.city.message}</p>
+                {errors.state && (
+                  <p className="mt-2 text-sm text-red-600">{errors.state.message}</p>
                 )}
               </div>
-            )}
-            
-            <div className="flex items-center">
-              <input
-                id="customCity"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                {...register("customCity")}
-                onChange={(e) => {
-                  setValue("customCity", e.target.checked);
-                  if (e.target.checked) {
-                    setValue("city", "");
-                  } else {
-                    setValue("customCityName", "");
-                  }
-                }}
-              />
-              <label htmlFor="customCity" className="ml-2 block text-sm text-gray-700">
-                Minha cidade não está na lista
-              </label>
-            </div>
-            
-            {watchCustomCity && (
-              <div>
-                <label htmlFor="customCityName" className="block text-sm font-medium text-gray-700 mb-1">
-                  Nome da cidade
-                </label>
-                <input
-                  type="text"
-                  id="customCityName"
-                  className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:outline-none focus:ring-green-500 sm:text-sm"
-                  placeholder="Digite o nome da sua cidade"
-                  {...register("customCityName")}
-                />
-                {errors.customCityName && (
-                  <p className="mt-2 text-sm text-red-600">{errors.customCityName.message}</p>
-                )}
-              </div>
-            )}
-            
-            <div className="flex justify-between pt-4">
-              <button
-                type="button"
-                onClick={() => {
-                  setCurrentStep(0);
-                  setLocation("/login");
-                }}
-                className="action-button-secondary"
-              >
-                Voltar
-              </button>
               
-              <button
-                type="submit"
-                className="action-button-primary"
-                disabled={isLoading}
-              >
-                {isLoading ? "Processando..." : "Próximo"}
-              </button>
-            </div>
-          </form>
+              {watchState && !watchCustomCity && (
+                <div>
+                  <label htmlFor="city" className="ipass-label">
+                    Cidade
+                  </label>
+                  <select
+                    id="city"
+                    className="ipass-input"
+                    {...register("city")}
+                  >
+                    <option value="">Selecione uma cidade</option>
+                    {availableCities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.city && (
+                    <p className="mt-2 text-sm text-red-600">{errors.city.message}</p>
+                  )}
+                </div>
+              )}
+              
+              <div className="flex items-center">
+                <input
+                  id="customCity"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-[#02ab89] focus:ring-[#02ab89]"
+                  {...register("customCity")}
+                  onChange={(e) => {
+                    setValue("customCity", e.target.checked);
+                    if (e.target.checked) {
+                      setValue("city", "");
+                    } else {
+                      setValue("customCityName", "");
+                    }
+                  }}
+                />
+                <label htmlFor="customCity" className="ml-2 block text-sm text-[#333333]">
+                  Minha cidade não está na lista
+                </label>
+              </div>
+              
+              {watchCustomCity && (
+                <div>
+                  <label htmlFor="customCityName" className="ipass-label">
+                    Nome da cidade
+                  </label>
+                  <input
+                    type="text"
+                    id="customCityName"
+                    className="ipass-input"
+                    placeholder="Digite o nome da sua cidade"
+                    {...register("customCityName")}
+                  />
+                  {errors.customCityName && (
+                    <p className="mt-2 text-sm text-red-600">{errors.customCityName.message}</p>
+                  )}
+                </div>
+              )}
+              
+              <div className="flex justify-between pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrentStep(0);
+                    setLocation("/login");
+                  }}
+                  className="ipass-btn-secondary"
+                >
+                  Voltar
+                </button>
+                
+                <button
+                  type="submit"
+                  className="ipass-btn-primary"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Processando..." : "Próximo"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </main>
       

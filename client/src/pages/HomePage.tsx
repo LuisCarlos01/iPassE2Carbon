@@ -21,20 +21,18 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow flex items-center justify-center">
-        <div className="text-center p-8">
+      <main className="flex-grow flex items-center justify-center bg-[#f5f5f5]">
+        <div className="text-center p-8 ipass-card max-w-md w-full">
           <div className="flex justify-center mb-6">
-            <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="8" fill="#15803D" />
-              <path d="M13 20H27M20 13V27" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <img src="/assets/logos/Ipass_logo.png" alt="iPass Logo" className="h-16 w-auto" />
+            <img src="/assets/logos/E2carbon.png" alt="E2Carbon Logo" className="h-16 w-auto ml-2" />
           </div>
           <h1 className="text-3xl font-bold mb-2">
-            <span className="text-gray-900">iPass</span>
-            <span className="text-green-600">E2Carbon</span>
+            <span className="text-[#333333]">iPass</span>
+            <span className="text-[#02ab89]">E2Carbon</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8">Compensação para São Thomé das Letras</p>
-          <div className="animate-pulse text-gray-500">Redirecionando...</div>
+          <p className="text-xl text-[#666666] mb-8">Compensação para São Thomé das Letras</p>
+          <div className="animate-pulse text-[#02ab89]">Redirecionando...</div>
         </div>
       </main>
       <Footer />

@@ -1,0 +1,120 @@
+/* Tema de cores oficiais da iPass */
+:root {
+  /* Cores principais */
+  --ipass-primary: #02ab89; /* Verde principal da iPass */
+  --ipass-secondary: #333333; /* Cinza escuro para textos */
+  --ipass-accent: #02ab89; /* Verde para destaques */
+  --ipass-background: #FFFFFF; /* Fundo branco */
+  --ipass-card-bg: #f8f9fa; /* Fundo de cards */
+  
+  /* Variações de cores */
+  --ipass-primary-light: #03c9a1; /* Verde mais claro */
+  --ipass-primary-dark: #019275; /* Verde mais escuro */
+  --ipass-gray-light: #f5f5f5; /* Cinza claro para fundos */
+  --ipass-gray-medium: #e0e0e0; /* Cinza médio para bordas */
+  
+  /* Cores de texto */
+  --ipass-text-primary: #333333; /* Texto principal */
+  --ipass-text-secondary: #666666; /* Texto secundário */
+  --ipass-text-light: #FFFFFF; /* Texto claro (para fundos escuros) */
+  --ipass-text-muted: #888888; /* Texto menos importante */
+  
+  /* Cores de estado */
+  --ipass-success: #02ab89; /* Sucesso (mesmo verde) */
+  --ipass-warning: #FFC107; /* Alerta */
+  --ipass-error: #DC3545; /* Erro */
+  --ipass-info: #17A2B8; /* Informação */
+  
+  /* Cores de borda */
+  --ipass-border: #E5E5E5; /* Bordas leves */
+  --ipass-border-dark: #CCCCCC; /* Bordas mais escuras */
+  
+  /* Cores de botões */
+  --ipass-button-primary: #02ab89; /* Botão principal */
+  --ipass-button-primary-hover: #019275; /* Hover do botão principal */
+  --ipass-button-secondary: #6c757d; /* Botão secundário */
+  --ipass-button-secondary-hover: #5a6268; /* Hover do botão secundário */
+}
+
+/* Classes de utilidade para cores */
+.ipass-bg-primary {
+  background-color: var(--ipass-primary);
+}
+
+.ipass-bg-light {
+  background-color: var(--ipass-gray-light);
+}
+
+.ipass-text-primary {
+  color: var(--ipass-primary);
+}
+
+.ipass-text-secondary {
+  color: var(--ipass-text-secondary);
+}
+
+.ipass-border-primary {
+  border-color: var(--ipass-primary);
+}
+
+/* Botões */
+.ipass-btn-primary {
+  background-color: var(--ipass-button-primary);
+  color: var(--ipass-text-light);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ipass-btn-primary:hover {
+  background-color: var(--ipass-button-primary-hover);
+}
+
+.ipass-btn-secondary {
+  background-color: var(--ipass-button-secondary);
+  color: var(--ipass-text-light);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ipass-btn-secondary:hover {
+  background-color: var(--ipass-button-secondary-hover);
+}
+
+/* Cards */
+.ipass-card {
+  background-color: var(--ipass-card-bg);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs */
+.ipass-input {
+  border: 1px solid var(--ipass-border);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.ipass-input:focus {
+  border-color: var(--ipass-primary);
+  outline: none;
+}
+
+/* Labels */
+.ipass-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--ipass-text-primary);
+}

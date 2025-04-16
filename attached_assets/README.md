@@ -233,4 +233,4 @@ Essas melhorias visam proporcionar uma experiência de resultado mais clara e in
 
 ## 👤 Desenvolvido por
 
-**Luiz Carlos (Netinho)** – Front-End Jr na iPass
+**Luiz Carlos (Netinho)** 
